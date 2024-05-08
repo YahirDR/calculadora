@@ -17,7 +17,7 @@ const Boton = (props)=>{
     return (
         <Pressable
             style={estiloBoton}
-            onPress={console.log()}
+            onPress={() => props.ManejarPress(props.children)}
 
         >
             <Text

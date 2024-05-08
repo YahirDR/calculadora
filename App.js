@@ -1,54 +1,84 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import Boton from './components/Boton';
 import Pantalla from './components/Pantalla';
+import React,{useState} from 'react';
+import BotonClear from './components/BotonClear';
+import Icon from 'react-native-vector-icons/Entypo';
+import { evaluate } from 'mathjs';
+
 
 export default function App() {
+
+  const [list,setList] = useState("");
+
+  const agregarValor=(value)=>{
+    setList(list + value);
+  }
+  const limpiarValores = () =>{
+    setList("");
+  }
+  const calcularResultado = () => {
+    try {
+      if (list) {
+        const resultado = evaluate(list);
+        setList(resultado.toString());
+      } else {
+        Alert.alert("Ingresa valores para calcular");
+      }
+    } catch (error) {
+      Alert.alert("Error al calcular", "La expresión ingresada no es válida");
+      
+    }
+  }; 
+
   return (
     <View style={styles.container}>
       <View
       
       >
-        <Pantalla value='d'  />
+        <Pantalla value={list}  />
       </View>
       <View
       style={styles.Line}
       >
-        <Boton>7</Boton>
-        <Boton>8</Boton>
-        <Boton>9</Boton>
-        <Boton>+</Boton>
+        <Boton ManejarPress={agregarValor}  >7</Boton>
+        <Boton ManejarPress={agregarValor} >8</Boton>
+        <Boton ManejarPress={agregarValor}  >9</Boton>
+        <Boton ManejarPress={agregarValor} >+</Boton>
       </View>
       <View
       style={styles.Line}
       >
-        <Boton>4</Boton>
-        <Boton>5</Boton>
-        <Boton>6</Boton>
-        <Boton>-</Boton>
+        <Boton ManejarPress={agregarValor}>4</Boton>
+        <Boton ManejarPress={agregarValor}>5</Boton>
+        <Boton ManejarPress={agregarValor}>6</Boton>
+        <Boton ManejarPress={agregarValor}>-</Boton>
       </View>
       <View
       style={styles.Line}
       >
-        <Boton>1</Boton>
-        <Boton>2</Boton>
-        <Boton>3</Boton>
-        <Boton>*</Boton>
+        <Boton ManejarPress={agregarValor}>1</Boton>
+        <Boton ManejarPress={agregarValor}>2</Boton>
+        <Boton ManejarPress={agregarValor}>3</Boton>
+        <Boton ManejarPress={agregarValor}>*</Boton>
       </View>
       <View
       style={styles.Line}
       >
         <View>
-        <Boton>0</Boton>
+          <BotonClear ManejarClear={limpiarValores}   >
+            <Icon name='trash'/>
+          </BotonClear>
         </View>
         <View>
-          <Boton>=</Boton>
+          <Boton ManejarPress={agregarValor}>0</Boton>
         </View>
         <View
           style={styles.LastLine}
         >
-        <Boton>/</Boton>
-        
+        <Boton ManejarPress={calcularResultado}>=</Boton>
+        <Boton ManejarPress={agregarValor}>/</Boton>
         </View>
       </View>
     </View>
@@ -70,7 +100,7 @@ const styles = StyleSheet.create({
   LastLine:{
     flexDirection: 'row', // Alinea los botones horizontalmente
     justifyContent: 'flex-end', // Alinea los botones a la derecha
-    marginLeft:90
+    
   },
 
 });
